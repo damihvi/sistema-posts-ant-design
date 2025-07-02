@@ -4,8 +4,8 @@
   "values": [
     {
       "key": "baseUrl",
-      "value": "http://localhost:3000",
-      "description": "URL base del servidor de desarrollo",
+      "value": "http://localhost:5174",
+      "description": "URL base del servidor de desarrollo React (Vite)",
       "enabled": true
     },
     {

@@ -1,6 +1,10 @@
 # Colección de Postman - Sistema de Posts
 
-Esta carpeta contiene la colección de Postman para probar la API del sistema de gestión de posts.
+Esta carpeta contiene la documentación de API en formato Postman para el Sistema de Posts desarrollado con React y Ant Design.
+
+## ⚠️ Importante
+
+Esta colección está diseñada para **documentar la API que podría implementarse** en el futuro. Actualmente, el proyecto es **solo frontend** (React + Vite) y **no tiene un backend real**.
 
 ## Archivos incluidos
 
@@ -15,11 +19,18 @@ Colección completa con todos los endpoints del sistema:
 
 ### 2. Posts-Environment.json
 Variables de entorno para diferentes ambientes:
-- `baseUrl`: URL base del servidor (http://localhost:3000)
+- `baseUrl`: URL base del servidor (http://localhost:5174 - servidor Vite)
 - `apiVersion`: Versión de la API (v1)
 - `authToken`: Token de autenticación (opcional)
 - `testUserId`: ID de usuario para testing
 - `testAuthor`: Autor de prueba
+
+## 🔴 Estado Actual
+
+**Nota**: Los endpoints de esta colección **NO funcionarán** porque:
+- El proyecto actual es solo frontend (React)
+- No hay un servidor backend implementado
+- Las peticiones retornarán errores 404 o de conexión
 
 ## Cómo usar
 
@@ -31,13 +42,21 @@ Variables de entorno para diferentes ambientes:
 
 ### 2. Configurar el entorno
 1. En Postman, selecciona el entorno "Posts System Environment"
-2. Verifica que `baseUrl` apunte a tu servidor local
-3. Ajusta las variables según tu configuración
+2. Verifica que `baseUrl` esté configurado como `http://localhost:5174`
+3. Ejecuta el servidor de desarrollo: `npm run dev`
 
-### 3. Ejecutar las pruebas
-1. Selecciona la colección "Sistema de Posts API"
-2. Ejecuta los requests individualmente o toda la colección
-3. Verifica las respuestas y códigos de estado
+### 3. Entender las limitaciones
+1. Los requests fallarán porque no hay backend
+2. Usa la colección como **documentación** de la API
+3. Implementa el backend según esta especificación para que funcione
+
+## 📚 Propósito de la Colección
+
+Esta colección sirve como:
+- **Documentación** de la API que se podría implementar
+- **Especificación** de los endpoints necesarios para el sistema
+- **Referencia** para desarrolladores que quieran crear el backend
+- **Ejemplos** de requests y responses esperados
 
 ## Estructura de datos
 
