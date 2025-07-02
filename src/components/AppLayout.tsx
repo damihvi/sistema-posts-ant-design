@@ -1,29 +1,25 @@
-import { Layout, Typography } from 'antd';
+import { Layout } from 'antd';
 import { Outlet } from 'react-router-dom';
 
-const { Content, Footer } = Layout;
-const { Text } = Typography;
+const { Content } = Layout;
 
 export default function AppLayout() {
   return (
-    <Layout style={{ minHeight: '100vh' }}>
+    <Layout style={{ 
+      minHeight: '100vh', 
+      backgroundColor: '#f5f5f5',
+      width: '100%',
+      overflow: 'hidden'
+    }}>
       <Content style={{ 
-        background: '#fff',
-        minHeight: 'calc(100vh - 70px)'
+        backgroundColor: '#f5f5f5',
+        minHeight: '100vh',
+        width: '100%',
+        boxSizing: 'border-box',
+        padding: 0
       }}>
         <Outlet />
       </Content>
-      
-      <Footer style={{ 
-        textAlign: 'center',
-        background: '#001529',
-        color: '#fff',
-        padding: '24px 50px'
-      }}>
-        <Text style={{ color: '#fff' }}>
-          © 2025 - Sistema de Posts - Taller Académico
-        </Text>
-      </Footer>
     </Layout>
   );
 }

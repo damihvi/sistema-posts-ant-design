@@ -17,7 +17,8 @@ import {
   DeleteOutlined, 
   EyeOutlined,
   CalendarOutlined,
-  UserOutlined
+  UserOutlined,
+  ArrowLeftOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { usePost } from '../context/PostContext';
@@ -94,11 +95,20 @@ export default function PostList() {
 
   return (
     <div style={{ padding: '24px' }}>
-      <div style={{ marginBottom: '24px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <Title level={2}>📄 Ver Publicaciones</Title>
-        <Button type="primary" onClick={() => navigate('/create')}>
-          Crear Nuevo Post
+      <div style={{ marginBottom: '24px' }}>
+        <Button 
+          icon={<ArrowLeftOutlined />} 
+          onClick={() => navigate('/')}
+          style={{ marginBottom: '16px' }}
+        >
+          Volver al inicio
         </Button>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <Title level={2}>📄 Ver Publicaciones</Title>
+          <Button type="primary" onClick={() => navigate('/create')}>
+            Crear Nuevo Post
+          </Button>
+        </div>
       </div>
 
       {state.posts.length === 0 ? (

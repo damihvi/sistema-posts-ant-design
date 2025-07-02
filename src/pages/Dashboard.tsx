@@ -1,4 +1,4 @@
-import { Typography, Image, Button, Row, Col } from 'antd';
+import { Typography, Image, Card, Space } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;
@@ -8,43 +8,42 @@ export default function Dashboard() {
 
   return (
     <div style={{ 
-      maxWidth: '1200px', 
-      margin: '0 auto', 
-      padding: '40px 20px',
-      backgroundColor: '#fff',
-      minHeight: '100vh'
+      padding: '15px',
+      backgroundColor: '#f5f5f5',
+      minHeight: '100vh',
+      width: '100%',
+      boxSizing: 'border-box'
     }}>
       {/* Header */}
-      <div style={{ textAlign: 'center', marginBottom: '40px' }}>
+      <div style={{ textAlign: 'center', marginBottom: '30px' }}>
         <Title level={1} style={{ 
-          fontSize: '48px', 
-          fontWeight: 'bold',
-          color: '#333',
-          marginBottom: '20px',
+          fontSize: 'clamp(24px, 5vw, 32px)', 
+          fontWeight: 'normal',
+          color: '#000',
+          marginBottom: '15px',
           lineHeight: '1.2'
         }}>
           Bienvenido al Módulo de Posts
         </Title>
         
         <Paragraph style={{ 
-          fontSize: '18px', 
-          color: '#666',
-          marginBottom: '40px',
-          maxWidth: '600px',
-          margin: '0 auto 40px auto'
+          fontSize: 'clamp(14px, 3vw, 16px)', 
+          color: '#000',
+          marginBottom: '30px',
+          maxWidth: '90%',
+          margin: '0 auto 30px auto'
         }}>
           Este sistema permite listar, crear y analizar publicaciones.
         </Paragraph>
         
-        <div style={{ marginBottom: '60px' }}>
+        <div style={{ marginBottom: '40px', textAlign: 'center' }}>
           <Image
             src="https://picsum.photos/id/1025/800/300"
             alt="Slide 1"
             style={{ 
+              maxWidth: '100%',
               width: '100%',
-              maxWidth: '800px',
-              height: '300px',
-              objectFit: 'cover',
+              height: 'auto',
               borderRadius: '8px'
             }}
             preview={false}
@@ -53,131 +52,125 @@ export default function Dashboard() {
       </div>
 
       {/* Features Section */}
-      <Row gutter={[32, 32]} style={{ marginBottom: '60px' }}>
-        <Col xs={24} md={8}>
-          <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-            <Title level={5} style={{ 
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: '#333',
-              marginBottom: '16px'
-            }}>
-              Ver Publicaciones
-            </Title>
-            <Paragraph style={{ 
-              fontSize: '16px',
-              color: '#666',
-              marginBottom: '24px',
-              lineHeight: '1.6'
-            }}>
-              Consulta todas las publicaciones.
-            </Paragraph>
-            <Button 
-              type="primary"
-              size="large"
-              onClick={() => navigate('/posts')}
-              style={{
-                backgroundColor: '#1890ff',
-                borderColor: '#1890ff',
-                borderRadius: '6px',
-                height: '44px',
-                fontSize: '16px',
-                fontWeight: '500'
-              }}
-            >
-              Ver Posts
-            </Button>
-          </div>
-        </Col>
+      <div style={{ 
+        maxWidth: '900px', 
+        margin: '0 auto',
+        width: '100%',
+        boxSizing: 'border-box'
+      }}>
+        {/* Ver Publicaciones */}
+        <Card 
+          style={{ 
+            marginBottom: '20px', 
+            cursor: 'pointer',
+            width: '100%',
+            boxSizing: 'border-box'
+          }}
+          hoverable
+          onClick={() => navigate('/posts')}
+        >
+          <Title level={5} style={{ 
+            fontSize: 'clamp(16px, 4vw, 18px)',
+            fontWeight: 'bold',
+            color: '#000',
+            marginBottom: '8px'
+          }}>
+            Ver Publicaciones
+          </Title>
+          <Paragraph style={{ 
+            fontSize: 'clamp(12px, 3vw, 14px)',
+            color: '#000',
+            margin: 0
+          }}>
+            Consulta todas las publicaciones.
+          </Paragraph>
+        </Card>
 
-        <Col xs={24} md={8}>
-          <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-            <Title level={5} style={{ 
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: '#333',
-              marginBottom: '16px'
-            }}>
-              Crear Nuevo Post
-            </Title>
-            <Paragraph style={{ 
-              fontSize: '16px',
-              color: '#666',
-              marginBottom: '24px',
-              lineHeight: '1.6'
-            }}>
-              Agrega una nueva publicación.
-            </Paragraph>
-            <Button 
-              type="primary"
-              size="large"
-              onClick={() => navigate('/create')}
-              style={{
-                backgroundColor: '#52c41a',
-                borderColor: '#52c41a',
-                borderRadius: '6px',
-                height: '44px',
-                fontSize: '16px',
-                fontWeight: '500'
-              }}
-            >
-              Crear Post
-            </Button>
-          </div>
-        </Col>
+        {/* Crear Nuevo Post */}
+        <Card 
+          style={{ 
+            marginBottom: '20px', 
+            cursor: 'pointer',
+            width: '100%',
+            boxSizing: 'border-box'
+          }}
+          hoverable
+          onClick={() => navigate('/create')}
+        >
+          <Title level={5} style={{ 
+            fontSize: 'clamp(16px, 4vw, 18px)',
+            fontWeight: 'bold',
+            color: '#000',
+            marginBottom: '8px'
+          }}>
+            Crear Nuevo Post
+          </Title>
+          <Paragraph style={{ 
+            fontSize: 'clamp(12px, 3vw, 14px)',
+            color: '#000',
+            margin: 0
+          }}>
+            Agrega una nueva publicación.
+          </Paragraph>
+        </Card>
 
-        <Col xs={24} md={8}>
-          <div style={{ textAlign: 'center', padding: '40px 20px' }}>
-            <Title level={5} style={{ 
-              fontSize: '20px',
-              fontWeight: 'bold',
-              color: '#333',
-              marginBottom: '16px'
-            }}>
-              Estadísticas
-            </Title>
-            <Paragraph style={{ 
-              fontSize: '16px',
-              color: '#666',
-              marginBottom: '24px',
-              lineHeight: '1.6'
-            }}>
-              Analiza la información de tus publicaciones.
-            </Paragraph>
-            <Button 
-              type="primary"
-              size="large"
-              onClick={() => navigate('/stats')}
-              style={{
-                backgroundColor: '#fa8c16',
-                borderColor: '#fa8c16',
-                borderRadius: '6px',
-                height: '44px',
-                fontSize: '16px',
-                fontWeight: '500'
-              }}
-            >
-              Ver Estadísticas
-            </Button>
-          </div>
-        </Col>
-      </Row>
+        {/* Estadísticas */}
+        <Card 
+          style={{ 
+            marginBottom: '20px', 
+            cursor: 'pointer',
+            width: '100%',
+            boxSizing: 'border-box'
+          }}
+          hoverable
+          onClick={() => navigate('/stats')}
+        >
+          <Title level={5} style={{ 
+            fontSize: 'clamp(16px, 4vw, 18px)',
+            fontWeight: 'bold',
+            color: '#000',
+            marginBottom: '8px'
+          }}>
+            Estadísticas
+          </Title>
+          <Paragraph style={{ 
+            fontSize: 'clamp(12px, 3vw, 14px)',
+            color: '#000',
+            margin: 0
+          }}>
+            Analiza la información de tus publicaciones.
+          </Paragraph>
+        </Card>
+      </div>
 
       {/* Footer Note */}
       <div style={{ 
         textAlign: 'center',
-        padding: '30px 20px',
-        backgroundColor: '#f8f9fa',
-        borderRadius: '8px',
-        marginBottom: '40px'
+        marginTop: '30px',
+        marginBottom: '15px',
+        padding: '0 10px'
       }}>
         <Paragraph style={{ 
           margin: 0,
-          fontSize: '16px',
-          color: '#666',
-          fontWeight: '500'
+          fontSize: 'clamp(12px, 3vw, 14px)',
+          color: '#000'
         }}>
           Recuerda: Cada post debe tener título y contenido.
+        </Paragraph>
+      </div>
+
+      {/* Copyright */}
+      <div style={{ 
+        textAlign: 'center',
+        marginTop: '15px',
+        padding: '0 10px'
+      }}>
+        <Paragraph style={{ 
+          margin: 0,
+          fontSize: 'clamp(10px, 2.5vw, 12px)',
+          color: '#666'
+        }}>
+          © 2025 - Sistema de Posts - Taller Académico
         </Paragraph>
       </div>
     </div>
