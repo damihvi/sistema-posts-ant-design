@@ -7,11 +7,12 @@ import {
   Typography, 
   Select, 
   message,
-  Space,
-  Divider,
-  Tag
+  Space
 } from 'antd';
-import { SaveOutlined, ArrowLeftOutlined } from '@ant-design/icons';
+import { 
+  SaveOutlined, 
+  ArrowLeftOutlined
+} from '@ant-design/icons';
 import { useNavigate, useParams } from 'react-router-dom';
 import { usePost } from '../context/PostContext';
 import type { PostFormData } from '../types';
@@ -25,7 +26,6 @@ export default function PostForm() {
   const { state, actions } = usePost();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
-  const [tags, setTags] = useState<string[]>([]);
 
   const isEditing = Boolean(id);
   const currentPost = isEditing ? state.posts.find(post => post.id === id) : null;
@@ -36,18 +36,20 @@ export default function PostForm() {
         title: currentPost.title,
         content: currentPost.content,
         author: currentPost.author,
-        status: currentPost.status,
+        category: currentPost.tags?.[0] || 'Tutorial',
       });
-      setTags(currentPost.tags || []);
     }
   }, [isEditing, currentPost, form]);
 
-  const handleSubmit = async (values: PostFormData) => {
+  const handleSubmit = async (values: any) => {
     setLoading(true);
     try {
-      const postData = {
-        ...values,
-        tags: tags.length > 0 ? tags : undefined,
+      const postData: PostFormData = {
+        title: values.title,
+        content: values.content,
+        author: values.author || 'Usuario',
+        status: 'published',
+        tags: values.category ? [values.category] : []
       };
 
       if (isEditing && id) {
@@ -55,7 +57,7 @@ export default function PostForm() {
         message.success('Post actualizado exitosamente');
       } else {
         await actions.createPost(postData);
-        message.success('Post creado exitosamente');
+        message.success('Post creado correctamente.');
       }
       
       navigate('/posts');
@@ -66,24 +68,15 @@ export default function PostForm() {
     }
   };
 
-  const handleAddTag = (tag: string) => {
-    if (tag && !tags.includes(tag)) {
-      setTags([...tags, tag]);
-    }
-  };
-
-  const handleRemoveTag = (tagToRemove: string) => {
-    setTags(tags.filter(tag => tag !== tagToRemove));
-  };
-
-  const commonTags = [
-    'tecnología', 'programación', 'react', 'javascript', 'tutorial', 
-    'guía', 'tips', 'desarrollo', 'web', 'móvil', 'diseño', 'ux/ui'
-  ];
-
   return (
-    <div style={{ padding: '24px', maxWidth: '800px', margin: '0 auto' }}>
-      <Card>
+    <div style={{ 
+      padding: '24px', 
+      maxWidth: '800px', 
+      margin: '0 auto',
+      backgroundColor: '#f5f5f5',
+      minHeight: '100vh'
+    }}>
+      <Card style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.1)' }}>
         <div style={{ marginBottom: '24px' }}>
           <Space>
             <Button 
@@ -93,8 +86,8 @@ export default function PostForm() {
               Volver
             </Button>
           </Space>
-          <Title level={2} style={{ marginTop: '16px' }}>
-            {isEditing ? '✏️ Editar Post' : '➕ Crear Nuevo Post'}
+          <Title level={2} style={{ marginTop: '16px', marginBottom: '24px' }}>
+            {isEditing ? 'Editar Publicación' : 'Crear Nueva Publicación'}
           </Title>
         </div>
 
@@ -103,90 +96,55 @@ export default function PostForm() {
           layout="vertical"
           onFinish={handleSubmit}
           requiredMark={false}
+          style={{ maxWidth: '100%' }}
         >
           <Form.Item
-            label="Título"
+            label={<span style={{ fontSize: '16px', fontWeight: '500' }}>Título:</span>}
             name="title"
             rules={[
               { required: true, message: 'El título es obligatorio' },
-              { min: 5, message: 'El título debe tener al menos 5 caracteres' },
-              { max: 100, message: 'El título no puede exceder 100 caracteres' }
+              { min: 3, message: 'El título debe tener al menos 3 caracteres' }
             ]}
           >
             <Input 
-              placeholder="Ingresa el título del post"
+              placeholder="Ingresa el título de la publicación"
               size="large"
+              style={{ fontSize: '16px' }}
             />
           </Form.Item>
 
           <Form.Item
-            label="Autor"
+            label={<span style={{ fontSize: '16px', fontWeight: '500' }}>Autor:</span>}
             name="author"
             rules={[
-              { required: true, message: 'El autor es obligatorio' },
-              { min: 2, message: 'El nombre del autor debe tener al menos 2 caracteres' }
+              { required: true, message: 'El autor es obligatorio' }
             ]}
           >
             <Input 
               placeholder="Nombre del autor"
               size="large"
+              style={{ fontSize: '16px' }}
             />
           </Form.Item>
 
           <Form.Item
-            label="Estado"
-            name="status"
-            rules={[{ required: true, message: 'Selecciona el estado del post' }]}
-            initialValue="draft"
+            label={<span style={{ fontSize: '16px', fontWeight: '500' }}>Categoría:</span>}
+            name="category"
+            rules={[{ required: true, message: 'Selecciona una categoría' }]}
+            initialValue="Tutorial"
           >
-            <Select size="large" placeholder="Selecciona el estado">
-              <Select.Option value="draft">📝 Borrador</Select.Option>
-              <Select.Option value="published">✅ Publicado</Select.Option>
+            <Select size="large" placeholder="Selecciona una categoría">
+              <Select.Option value="Tutorial">Tutorial</Select.Option>
+              <Select.Option value="Guía">Guía</Select.Option>
+              <Select.Option value="Noticia">Noticia</Select.Option>
+              <Select.Option value="Tecnología">Tecnología</Select.Option>
+              <Select.Option value="Programación">Programación</Select.Option>
+              <Select.Option value="Diseño">Diseño</Select.Option>
             </Select>
           </Form.Item>
 
-          <Form.Item label="Tags">
-            <div style={{ marginBottom: '8px' }}>
-              <Select
-                placeholder="Selecciona o escribe tags"
-                style={{ width: '100%' }}
-                onSelect={(value: string | undefined) => value && handleAddTag(value)}
-                value={undefined}
-                size="large"
-                showSearch
-                allowClear
-              >
-                {commonTags
-                  .filter(tag => !tags.includes(tag))
-                  .map(tag => (
-                    <Select.Option key={tag} value={tag}>
-                      {tag}
-                    </Select.Option>
-                  ))
-                }
-              </Select>
-            </div>
-            {tags.length > 0 && (
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-                {tags.map(tag => (
-                  <Tag
-                    key={tag}
-                    closable
-                    onClose={() => handleRemoveTag(tag)}
-                    style={{ 
-                      borderRadius: '16px',
-                      marginBottom: '4px'
-                    }}
-                  >
-                    {tag}
-                  </Tag>
-                ))}
-              </div>
-            )}
-          </Form.Item>
-
           <Form.Item
-            label="Contenido"
+            label={<span style={{ fontSize: '16px', fontWeight: '500' }}>Contenido:</span>}
             name="content"
             rules={[
               { required: true, message: 'El contenido es obligatorio' },
@@ -194,20 +152,18 @@ export default function PostForm() {
             ]}
           >
             <TextArea
-              rows={12}
-              placeholder="Escribe el contenido del post aquí..."
-              showCount
-              maxLength={5000}
+              rows={8}
+              placeholder="Escribe el contenido de la publicación aquí..."
+              style={{ fontSize: '16px' }}
             />
           </Form.Item>
 
-          <Divider />
-
-          <Form.Item style={{ marginBottom: 0, textAlign: 'right' }}>
-            <Space>
+          <Form.Item style={{ marginTop: '32px', textAlign: 'center' }}>
+            <Space size="large">
               <Button 
                 size="large"
                 onClick={() => navigate('/posts')}
+                style={{ minWidth: '120px' }}
               >
                 Cancelar
               </Button>
@@ -217,19 +173,13 @@ export default function PostForm() {
                 size="large"
                 loading={loading}
                 icon={<SaveOutlined />}
+                style={{ minWidth: '150px' }}
               >
-                {isEditing ? 'Actualizar Post' : 'Crear Post'}
+                {isEditing ? 'Actualizar' : 'Crear Post'}
               </Button>
             </Space>
           </Form.Item>
         </Form>
-      </Card>
-
-      <Card style={{ marginTop: '16px' }}>
-        <Typography.Paragraph type="secondary" style={{ margin: 0, fontSize: '12px' }}>
-          💡 <strong>Tip:</strong> Recuerda que cada post debe tener título y contenido. 
-          Los tags te ayudarán a organizar mejor tus publicaciones.
-        </Typography.Paragraph>
       </Card>
     </div>
   );

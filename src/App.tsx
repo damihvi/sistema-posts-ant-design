@@ -7,6 +7,7 @@ import Dashboard from './pages/Dashboard';
 import PostList from './pages/PostList';
 import PostForm from './pages/PostForm';
 import Statistics from './pages/Statistics';
+import Information from './pages/Information';
 import './App.css';
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
               <Route path="create" element={<PostForm />} />
               <Route path="edit/:id" element={<PostForm />} />
               <Route path="stats" element={<Statistics />} />
+              <Route path="info" element={<Information />} />
             </Route>
           </Routes>
         </Router>

@@ -10,7 +10,12 @@ import {
   message,
   Spin,
   Empty,
-  Tooltip
+  Tooltip,
+  Input,
+  Select,
+  Row,
+  Col,
+  Divider
 } from 'antd';
 import { 
   EditOutlined, 
@@ -18,7 +23,9 @@ import {
   EyeOutlined,
   CalendarOutlined,
   UserOutlined,
-  ArrowLeftOutlined
+  SearchOutlined,
+  FilterOutlined,
+  PlusOutlined
 } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { usePost } from '../context/PostContext';
@@ -26,16 +33,35 @@ import type { Post } from '../types';
 import dayjs from 'dayjs';
 
 const { Title, Paragraph, Text } = Typography;
+const { Search } = Input;
 
 export default function PostList() {
   const navigate = useNavigate();
   const { state, actions } = usePost();
   const [selectedPost, setSelectedPost] = useState<Post | null>(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [statusFilter, setStatusFilter] = useState<string>('all');
+  const [authorFilter, setAuthorFilter] = useState<string>('all');
 
   useEffect(() => {
     actions.fetchPosts();
   }, []);
+
+  // Filtrar posts basado en búsqueda y filtros
+  const filteredPosts = state.posts.filter(post => {
+    const matchesSearch = post.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         post.content.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         post.author.toLowerCase().includes(searchTerm.toLowerCase());
+    
+    const matchesStatus = statusFilter === 'all' || post.status === statusFilter;
+    const matchesAuthor = authorFilter === 'all' || post.author === authorFilter;
+    
+    return matchesSearch && matchesStatus && matchesAuthor;
+  });
+
+  // Obtener lista única de autores para el filtro
+  const uniqueAuthors = [...new Set(state.posts.map(post => post.author))];
 
   const handleView = (post: Post) => {
     setSelectedPost(post);
@@ -95,37 +121,117 @@ export default function PostList() {
 
   return (
     <div style={{ padding: '24px' }}>
-      <div style={{ marginBottom: '24px' }}>
-        <Button 
-          icon={<ArrowLeftOutlined />} 
-          onClick={() => navigate('/')}
-          style={{ marginBottom: '16px' }}
-        >
-          Volver al inicio
-        </Button>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Title level={2}>📄 Ver Publicaciones</Title>
-          <Button type="primary" onClick={() => navigate('/create')}>
-            Crear Nuevo Post
-          </Button>
-        </div>
-      </div>
+      {/* Header con búsqueda y filtros */}
+      <Card style={{ marginBottom: '24px' }}>
+        <Row gutter={[16, 16]} align="middle">
+          <Col xs={24} lg={12}>
+            <Title level={2} style={{ margin: 0 }}>
+              📄 Gestión de Publicaciones
+            </Title>
+          </Col>
+          <Col xs={24} lg={12} style={{ textAlign: 'right' }}>
+            <Button 
+              type="primary" 
+              icon={<PlusOutlined />}
+              onClick={() => navigate('/create')}
+              size="large"
+            >
+              Crear Nuevo Post
+            </Button>
+          </Col>
+        </Row>
+        
+        <Divider />
+        
+        {/* Búsqueda y filtros */}
+        <Row gutter={[16, 16]} style={{ marginTop: '16px' }}>
+          <Col xs={24} md={8}>
+            <Search
+              placeholder="Buscar en posts..."
+              allowClear
+              enterButton={<SearchOutlined />}
+              size="large"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </Col>
+          <Col xs={12} md={8}>
+            <Select
+              placeholder="Filtrar por estado"
+              style={{ width: '100%' }}
+              size="large"
+              value={statusFilter}
+              onChange={setStatusFilter}
+            >
+              <Select.Option value="all">Todos los estados</Select.Option>
+              <Select.Option value="published">Publicados</Select.Option>
+              <Select.Option value="draft">Borradores</Select.Option>
+              <Select.Option value="archived">Archivados</Select.Option>
+            </Select>
+          </Col>
+          <Col xs={12} md={8}>
+            <Select
+              placeholder="Filtrar por autor"
+              style={{ width: '100%' }}
+              size="large"
+              value={authorFilter}
+              onChange={setAuthorFilter}
+            >
+              <Select.Option value="all">Todos los autores</Select.Option>
+              {uniqueAuthors.map(author => (
+                <Select.Option key={author} value={author}>
+                  {author}
+                </Select.Option>
+              ))}
+            </Select>
+          </Col>
+        </Row>
 
-      {state.posts.length === 0 ? (
+        {/* Estadísticas de filtros */}
+        <div style={{ marginTop: '16px', padding: '12px', background: '#f8f9fa', borderRadius: '6px' }}>
+          <Text type="secondary">
+            Mostrando {filteredPosts.length} de {state.posts.length} publicaciones
+            {searchTerm && ` • Búsqueda: "${searchTerm}"`}
+            {statusFilter !== 'all' && ` • Estado: ${getStatusText(statusFilter)}`}
+            {authorFilter !== 'all' && ` • Autor: ${authorFilter}`}
+          </Text>
+        </div>
+      </Card>
+
+      {filteredPosts.length === 0 ? (
         <Card>
           <Empty
-            description="No hay publicaciones disponibles"
+            description={searchTerm || statusFilter !== 'all' || authorFilter !== 'all' 
+              ? "No se encontraron publicaciones con los filtros aplicados" 
+              : "No hay publicaciones disponibles"
+            }
             image={Empty.PRESENTED_IMAGE_SIMPLE}
           >
-            <Button type="primary" onClick={() => navigate('/create')}>
-              Crear tu primer post
-            </Button>
+            {!searchTerm && statusFilter === 'all' && authorFilter === 'all' && (
+              <Button type="primary" onClick={() => navigate('/create')}>
+                Crear tu primer post
+              </Button>
+            )}
+            {(searchTerm || statusFilter !== 'all' || authorFilter !== 'all') && (
+              <Space direction="vertical">
+                <Button onClick={() => {
+                  setSearchTerm('');
+                  setStatusFilter('all');
+                  setAuthorFilter('all');
+                }}>
+                  Limpiar filtros
+                </Button>
+                <Button type="primary" onClick={() => navigate('/create')}>
+                  Crear nuevo post
+                </Button>
+              </Space>
+            )}
           </Empty>
         </Card>
       ) : (
         <List
           grid={{ gutter: 16, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }}
-          dataSource={state.posts}
+          dataSource={filteredPosts}
           renderItem={(post) => (
             <List.Item>
               <Card

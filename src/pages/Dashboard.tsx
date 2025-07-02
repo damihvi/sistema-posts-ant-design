@@ -1,4 +1,4 @@
-import { Typography, Image, Card, Space } from 'antd';
+import { Typography, Image, Card } from 'antd';
 import { useNavigate } from 'react-router-dom';
 
 const { Title, Paragraph } = Typography;
@@ -139,6 +139,34 @@ export default function Dashboard() {
             margin: 0
           }}>
             Analiza la información de tus publicaciones.
+          </Paragraph>
+        </Card>
+
+        {/* Información */}
+        <Card 
+          style={{ 
+            marginBottom: '20px', 
+            cursor: 'pointer',
+            width: '100%',
+            boxSizing: 'border-box'
+          }}
+          hoverable
+          onClick={() => navigate('/info')}
+        >
+          <Title level={5} style={{ 
+            fontSize: 'clamp(16px, 4vw, 18px)',
+            fontWeight: 'bold',
+            color: '#000',
+            marginBottom: '8px'
+          }}>
+            Información
+          </Title>
+          <Paragraph style={{ 
+            fontSize: 'clamp(12px, 3vw, 14px)',
+            color: '#000',
+            margin: 0
+          }}>
+            Conoce más sobre el sistema.
           </Paragraph>
         </Card>
       </div>
