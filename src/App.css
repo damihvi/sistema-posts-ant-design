@@ -1,0 +1,150 @@
+/* Estilos globales para la aplicación de Posts */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: #f0f2f5;
+}
+
+/* Mejoras en las transiciones */
+.ant-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.ant-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+}
+
+/* Estilos para botones */
+.ant-btn-primary {
+  background: linear-gradient(135deg, #1890ff 0%, #40a9ff 100%);
+  border: none;
+  box-shadow: 0 2px 8px rgba(24, 144, 255, 0.3);
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(135deg, #40a9ff 0%, #1890ff 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(24, 144, 255, 0.4);
+}
+
+/* Mejoras en el layout del sider */
+.ant-layout-sider {
+  background: #fff !important;
+}
+
+.ant-menu-inline {
+  border-right: none !important;
+}
+
+.ant-menu-item {
+  margin: 4px 8px !important;
+  border-radius: 8px !important;
+  height: 44px !important;
+  line-height: 44px !important;
+}
+
+.ant-menu-item-selected {
+  background: linear-gradient(135deg, #e6f7ff 0%, #bae7ff 100%) !important;
+  color: #1890ff !important;
+}
+
+.ant-menu-item:hover {
+  background: rgba(24, 144, 255, 0.08) !important;
+  color: #1890ff !important;
+}
+
+/* Animaciones suaves */
+@keyframes slideInUp {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.slide-in-up {
+  animation: slideInUp 0.3s ease-out;
+}
+
+/* Estilos para las estadísticas */
+.ant-statistic-content {
+  font-weight: 600;
+}
+
+.ant-progress-bg {
+  transition: all 0.3s ease;
+}
+
+/* Mejoras en los tags */
+.ant-tag {
+  border-radius: 12px;
+  font-size: 12px;
+  padding: 2px 8px;
+  margin: 2px;
+  transition: all 0.2s ease;
+}
+
+.ant-tag:hover {
+  transform: scale(1.05);
+}
+
+/* Estilos para formularios */
+.ant-form-item-label > label {
+  font-weight: 600;
+  color: #262626;
+}
+
+.ant-input:focus,
+.ant-input-focused {
+  box-shadow: 0 0 0 2px rgba(24, 144, 255, 0.2);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .ant-layout-sider {
+    position: fixed !important;
+    z-index: 999;
+    height: 100vh;
+  }
+  
+  .ant-layout-content {
+    margin-left: 0 !important;
+  }
+}
+
+/* Loading states */
+.ant-spin-container {
+  transition: opacity 0.3s;
+}
+
+.ant-spin-blur {
+  opacity: 0.5;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a1a1a1;
+}
